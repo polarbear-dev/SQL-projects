@@ -19,6 +19,7 @@ JOIN installs AS c
 GROUP BY Source
 ORDER BY NumChecks DESC;
 
+--How many total unique users made purchases in our application
 SELECT 
     COUNT(DISTINCT(a.UserID)) AS UniqUserID,
     c.Source AS Source
