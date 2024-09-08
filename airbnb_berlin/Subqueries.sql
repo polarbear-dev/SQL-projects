@@ -48,7 +48,7 @@ WHERE
     AND
         multiSearchAnyCaseInsensitive(amenities, ['wifi'])
     AND
-        toDateorNull(last_review) > '2018-09-01'
+        toDateOrNull(last_review) > '2018-09-01'
 ORDER BY rsr DESC
 LIMIT 1000
 
