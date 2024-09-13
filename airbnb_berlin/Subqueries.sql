@@ -83,3 +83,18 @@ GROUP BY listing_id
 HAVING reviewer_amount > avg_reviewers
 ORDER BY listing_id ASC
 LIMIT 100
+
+/*
+Let’s assume that when choosing accommodation, we are only interested in two parameters: 
+the presence of a kitchen and a flexible cancellation policy, with the former being the priority
+*/
+SELECT 
+    host_id, 
+    CASE  
+        WHEN multiSearchAnyCaseInsensitive(amenities, ['kitchen']) AND multiSearchAnyCaseInsensitive(cancellation_policy, ['flexible']) THEN 'good'
+        WHEN multiSearchAnyCaseInsensitive(amenities, ['kitchen']) THEN 'ok'
+        ELSE 'not ok'
+    END AS Group
+FROM listings
+ORDER BY Group ASC
+LIMIT 5
