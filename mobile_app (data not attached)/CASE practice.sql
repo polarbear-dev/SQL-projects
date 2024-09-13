@@ -1,5 +1,4 @@
 --Segment all customers
-
 SELECT 
     UserID, 
     AVG(Rub) as avg_rub,
@@ -15,7 +14,6 @@ ORDER BY UserID ASC
 LIMIT 10
 
 --Calculate the number of customers in each segment and the revenue each segment generates
-
 SELECT 
     COUNT(DISTINCT l.UserID) as count_users,
     SUM(l.Rub) as sum_rub,
