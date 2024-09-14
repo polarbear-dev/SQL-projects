@@ -88,7 +88,6 @@ LIMIT 100
 In the context of choosing a place to stay, we assume that we are only interested in two parameters: 
 the presence of a kitchen (kitchen) and a flexible cancellation policy (flexible), with the former being the priority
 */
-
 SELECT 
     host_id, 
     CASE  
