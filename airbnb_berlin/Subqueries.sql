@@ -1,4 +1,4 @@
-SELECT
+﻿SELECT
     id,
     toFloat64OrNull(review_scores_rating) AS rsr ,
     reviews_per_month
@@ -85,16 +85,10 @@ ORDER BY listing_id ASC
 LIMIT 100
 
 /*
-<<<<<<< HEAD
 In the context of choosing a place to stay, we assume that we are only interested in two parameters: 
 the presence of a kitchen (kitchen) and a flexible cancellation policy (flexible), with the former being the priority
 */
 
-=======
-Let’s assume that when choosing accommodation, we are only interested in two parameters: 
-the presence of a kitchen and a flexible cancellation policy, with the former being the priority
-*/
->>>>>>> 57f572b4f6a8cb6e97522e53757975b5a7067eb3
 SELECT 
     host_id, 
     CASE  
@@ -104,8 +98,5 @@ SELECT
     END AS Group
 FROM listings
 ORDER BY Group ASC
-<<<<<<< HEAD
 LIMIT 5
-=======
-LIMIT 5
->>>>>>> 57f572b4f6a8cb6e97522e53757975b5a7067eb3
+
