@@ -1,6 +1,4 @@
-﻿SELECT
-    l.DeviceID AS DeviceID,
-    r.UserID AS UserID
+﻿SELECT *
 FROM events AS l
 LEFT JOIN devices AS r
     ON l.DeviceID = r.DeviceID
@@ -9,38 +7,39 @@ LIMIT 1000;
 
 --Let's check which users coming from which source made the highest number of purchases
 SELECT 
-    c.Source AS Source,
-    COUNT(a.Rub) AS NumChecks
-FROM checks AS a
+    a.Source AS Source,
+    COUNT(*) AS NumChecks
+FROM installs AS a
 JOIN devices AS b
-    ON a.UserID = b.UserID 
-JOIN installs AS c
-    ON b.DeviceID = c.DeviceID
+    ON a.DeviceID = b.DeviceID 
+JOIN checks AS c
+    ON b.UserID = c.UserID
 GROUP BY Source
 ORDER BY NumChecks DESC;
 
 --How many total unique users made purchases in our application
 SELECT 
-    COUNT(DISTINCT(a.UserID)) AS UniqUserID,
-    c.Source AS Source
-FROM checks AS a
+    COUNT(DISTINCT(c.UserID)) AS UniqUserID,
+    a.Source AS Source
+FROM installs AS a
 JOIN devices AS b
-    ON a.UserID = b.UserID 
-JOIN installs AS c
-    ON b.DeviceID = c.DeviceID
+    ON a.DeviceID = b.DeviceID 
+JOIN checks AS c
+    ON b.UserID = c.UserID
 GROUP BY Source;
 
 --Total revenue, as well as minimum, maximum, and average purchase amount
-SELECT 
-    SUM(a.Rub) AS Revenue,
-    MIN(a.Rub) AS MinCheck,
-    AVG(a.Rub) AS AvgCheck,
-    MAX(a.Rub) AS MaxCheck
-FROM checks AS a
+SELECT
+    a.Source AS Source,
+    SUM(c.Rub) AS Revenue,
+    MIN(c.Rub) AS MinCheck,
+    AVG(c.Rub) AS AvgCheck,
+    MAX(c.Rub) AS MaxCheck
+FROM installs AS a
 JOIN devices AS b
-    ON a.UserID = b.UserID 
-JOIN installs AS c
-    ON b.DeviceID = c.DeviceID
+    ON a.DeviceID = b.DeviceID 
+JOIN checks AS c
+    ON b.UserID = c.UserID
 GROUP BY Source;
 
 --Device identifiers of users who made at least one purchase in October 2019
@@ -67,10 +66,10 @@ ORDER BY AvgEvents DESC;
 
 --The number of unique DeviceIDs in installs for which there are views in the events table, with breakdown by platforms.
 SELECT 
-    COUNT(DISTINCT(a.DeviceID)) AS DeviceID,
-    b.Platform AS Platform
-FROM events AS a
-RIGHT SEMI JOIN installs AS b
+    COUNT(DISTINCT(b.DeviceID)) AS DeviceID,
+    a.Platform AS Platform
+FROM installs AS a
+LEFT SEMI JOIN events AS b
     ON a.DeviceID = b.DeviceID
 GROUP BY Platform;
 
@@ -91,8 +90,7 @@ as there was an error in logging DeviceIDs in the events table,
 where part of the ID was recorded incorrectly, 
 resulting in DeviceIDs appearing in the events table for which there are no installs */
 SELECT 
-    DISTINCT(a.DeviceID) AS DeviceID,
-    b.Platform AS Platform
+    DISTINCT(a.DeviceID) AS DeviceID
 FROM events AS a
 LEFT ANTI JOIN installs AS b
     ON a.DeviceID = b.DeviceID
