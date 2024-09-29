@@ -60,13 +60,13 @@ FROM
         Country,
         toStartOfMonth(InvoiceDate) AS date_month
     FROM retail
-    WHERE Quantity >= 0
+    WHERE Quantity >= 0 AND
+    Country IN ('United Kingdom', 'Germany', 'France', 'Spain', 'Netherlands', 'Belgium', 'Switzerland', 'Portugal', 'Australia', 'USA')
     GROUP BY 
         InvoiceNo,
         Country,
         date_month
     )
-WHERE Country IN ('United Kingdom', 'Germany', 'France', 'Spain', 'Netherlands', 'Belgium', 'Switzerland', 'Portugal', 'Australia', 'USA')
 GROUP BY 
     Country,
     date_month
