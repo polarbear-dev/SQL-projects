@@ -52,13 +52,13 @@ SELECT
     date, 
     total_volume,
     region,
-    type,
-    (total_volume - lag(total_volume,1) OVER ()) AS week_diff
+    total_volume - LAG(total_volume, 1) OVER () AS week_diff
 FROM avocado
 WHERE 
     region = 'TotalUS' 
     AND 
     type = 'conventional'
+ORDER BY date
 
 --Let's take a closer look at avocado sales volumes in New York in 2018
 SELECT
@@ -66,14 +66,13 @@ SELECT
     total_volume,
     region,
     type,
-    (total_volume - lag(total_volume,1) OVER (
-    PARTITION BY type
-    ORDER BY date)) AS week_diff
+    total_volume - lag(total_volume, 1) OVER (PARTITION BY type) AS week_diff
 FROM avocado
 WHERE 
     region = 'NewYork'
     AND
-    EXTRACT(YEAR from date) = '2018'
+    year = 2018
+ORDER by date
 
 --Let's calculate the moving average of avocado prices (average_price) in New York, with a breakdown by avocado type
 SELECT
@@ -91,5 +90,8 @@ WINDOW w AS
     ORDER BY date ASC
     ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
     )
+ORDER BY
+    type,
+    date
 
 
