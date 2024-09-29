@@ -52,14 +52,13 @@ SELECT
     AVG(Quantity) AS AvgQuantity,
     MIN(Quantity) AS MinQuantity,
     MAX(Quantity) AS MaxQuantity,
-    toStartOfMonth(InvoiceDate) AS month_date,
-    Country
+    toStartOfMonth(InvoiceDate) AS month_date
 FROM default.retail
 WHERE
         Description != 'Manual'
     AND
         Country = 'United Kingdom'
     AND
-        Quantity > 0    
-GROUP BY Country, month_date
+        Quantity >= 0    
+GROUP BY month_date
 ORDER BY month_date;
