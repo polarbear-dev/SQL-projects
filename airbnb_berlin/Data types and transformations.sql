@@ -47,11 +47,19 @@ SELECT
 FROM listings
 GROUP BY room_type;
 
+--Which parts of the city have the lowest average cost per night?
+SELECT
+    neighbourhood_cleansed,
+    AVG(toFloat64OrNull(replaceRegexpAll(price, '[$,]', ''))) as avg_price
+FROM listings
+GROUP BY neighbourhood_cleansed
+ORDER BY avg_price
+
 --Which of the presented rooms is located closest to the city center?
 SELECT
     id,
-    room_type,
     geoDistance(13.4050, 52.5200, toFloat64OrNull(longitude), toFloat64OrNull(latitude)) as distance
 FROM listings
 WHERE room_type = 'Private room'
+ORDER BY distance
 LIMIT 100;
